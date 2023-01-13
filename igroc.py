@@ -1,25 +1,26 @@
 import pygame
-import Common
+pygame init:
+for event in pygame.event.get():
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_q:
+            game_over = True
+            game_close = False
+        if event.key == pygame.K_c:
+            gameLoop()
 
-win = Common.win
-
-class Player():
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-
-    def update(self):
-        pygame.draw.rect(win, (0, 255, 0), (self.x, self.y, 100, 100))
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
-            self.y -= 100
-            pygame.time.delay(200)
-        if keys[pygame.K_DOWN]:
-            self.y += 100
-            pygame.time.delay(200)
-        if keys[pygame.K_LEFT]:
-            self.x -= 100
-            pygame.time.delay(200)
-        if keys[pygame.K_RIGHT]:
-            self.x += 100
-            pygame.time.delay(200)
+for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+        game_over = True
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_LEFT:
+            x1_change = -snake_block
+            y1_change = 0
+        elif event.key == pygame.K_RIGHT:
+            x1_change = snake_block
+            y1_change = 0
+        elif event.key == pygame.K_UP:
+            y1_change = -snake_block
+            x1_change = 0
+        elif event.key == pygame.K_DOWN:
+            y1_change = snake_block
+            x1_change = 0
