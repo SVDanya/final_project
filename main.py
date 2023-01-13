@@ -1,7 +1,8 @@
 import pygame
 import time
 import random
-
+import igroc
+import Common
 pygame.init()
 
 white = (255, 255, 255)
@@ -56,6 +57,7 @@ def gameLoop():
         while game_close == True:
             dis.fill(blue)
             message("You Lost!!!!!", red)
+            message("                       " + str(Length_of_snake - 1), red)
 
             pygame.display.update()
 
@@ -89,6 +91,10 @@ def gameLoop():
         x1 += x1_change
         y1 += y1_change
         dis.fill(blue)
+        f1 = pygame.font.Font(None, 36)
+        text1 = f1.render("Score: " + str(Length_of_snake - 1), True,
+                          (0, 20, 50))
+        dis.blit(text1, (0, 0))
         pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
         snake_Head = []
         snake_Head.append(x1)
@@ -103,13 +109,14 @@ def gameLoop():
 
         our_snake(snake_block, snake_List)
 
-        pygame.display.update()
 
-        if x1 == foodx and y1 == foody:
+        if foodx >= x1 and foodx <= x1 + snake_block and foody >= y1 and foody <= y1 + snake_block:
             foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
             foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
             Length_of_snake += 1
+        #print('x1 = ' , x1, 'y1 = ', y1, 'foodx = ', foodx, 'foody = ', foody)
 
+        pygame.display.update()
         clock.tick(snake_speed)
     FPS = (600)
     pygame.quit()
