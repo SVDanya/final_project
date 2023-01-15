@@ -5,59 +5,37 @@ import igroc
 import Common
 pygame.init()
 
-white = (255, 255, 255)
-yellow = (255, 255, 102)
-black = (0, 0, 0)
-red = (213, 50, 80)
-green = (0, 255, 0)
-blue = (50, 153, 213)
+igroc = igroc
+Common = Common
+dis = pygame.display.set_mode((igroc.dis_width, igroc.dis_height))
 
-dis_width = 1000
-dis_height = 600
-
-dis = pygame.display.set_mode((dis_width, dis_height))
-
-clock = pygame.time.Clock()
-
-snake_block = 20
-snake_speed = 5
 
 font_style = pygame.font.SysFont("bahnschrift", 45)
 score_font = pygame.font.SysFont("comicsansms", 45)
-
-
 def our_snake(snake_block, snake_list):
     for x in snake_list:
-        pygame.draw.rect(dis, red, [x[0], x[1], snake_block, snake_block])
-
+        pygame.draw.rect(dis, Common.red, [x[0], x[1], snake_block, snake_block])
 
 def message(msg, color):
     mesg = font_style.render(msg, True, color)
-    dis.blit(mesg, [dis_width / 6, dis_height / 3])
-
+    dis.blit(mesg, [igroc.dis_width / 6, igroc.dis_height / 3])
 
 def gameLoop():
     game_over = False
     game_close = False
 
-    x1 = dis_width / 2
-    y1 = dis_height / 2
+    x1 = igroc.dis_width / 2
+    y1 = igroc.dis_height / 2
 
-    x1_change = 0
-    y1_change = 0
 
     snake_List = []
     Length_of_snake = 1
 
-    foodx = round(random.randrange(0, dis_width - snake_block) / 20.0) * 20.0
-    foody = round(random.randrange(0, dis_height - snake_block) / 20.0) * 20.0
-
     while not game_over:
-
         while game_close == True:
-            dis.fill(blue)
-            message("You Lost!!!!!", red)
-            message("                       " + str(Length_of_snake - 1), red)
+            dis.fill(Common.blue)
+            message("You Lost!!!!!", Common.red)
+            message("                     " + str(Length_of_snake - 1), Common.red)
 
             pygame.display.update()
 
@@ -71,56 +49,52 @@ def gameLoop():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                game_over = True
+                Common.game_over = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    x1_change = -snake_block
-                    y1_change = 0
+                    Common.x1_change = -igroc.snake_block
+                    Common.y1_change = 0
                 elif event.key == pygame.K_RIGHT:
-                    x1_change = snake_block
-                    y1_change = 0
+                    Common.x1_change = igroc.snake_block
+                    Common.y1_change = 0
                 elif event.key == pygame.K_UP:
-                    y1_change = -snake_block
-                    x1_change = 0
+                    Common.y1_change = -igroc.snake_block
+                    Common.x1_change = 0
                 elif event.key == pygame.K_DOWN:
-                    y1_change = snake_block
-                    x1_change = 0
+                    Common.y1_change = igroc.snake_block
+                    Common.x1_change = 0
 
-        if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
+        if x1 >= igroc.dis_width or x1 < 0 or y1 >= igroc.dis_height or y1 < 0:
             game_close = True
-        x1 += x1_change
-        y1 += y1_change
-        dis.fill(blue)
+        x1 += Common.x1_change
+        y1 += Common.y1_change
+        dis.fill(Common.blue)
         f1 = pygame.font.Font(None, 36)
         text1 = f1.render("Score: " + str(Length_of_snake - 1), True,
                           (0, 20, 50))
         dis.blit(text1, (0, 0))
-        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
+        pygame.draw.rect(dis, Common.green, [Common.foodx, Common.foody, igroc.snake_block, igroc.snake_block])
         snake_Head = []
         snake_Head.append(x1)
         snake_Head.append(y1)
         snake_List.append(snake_Head)
         if len(snake_List) > Length_of_snake:
             del snake_List[0]
-
         for x in snake_List[:-1]:
             if x == snake_Head:
                 game_close = True
 
-        our_snake(snake_block, snake_List)
+        our_snake(igroc.snake_block, snake_List)
 
 
-        if foodx >= x1 and foodx <= x1 + snake_block and foody >= y1 and foody <= y1 + snake_block:
-            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+        if Common.foodx >= x1 and Common.foodx <= x1 + igroc.snake_block and Common.foody >= y1 and Common.foody <= y1 + igroc.snake_block:
+            Common.foodx = round(random.randrange(0, igroc.dis_width - igroc.snake_block) / 20.0) * 20.0
+            Common.foody = round(random.randrange(0, igroc.dis_height - igroc.snake_block) / 20.0) * 20.0
             Length_of_snake += 1
         #print('x1 = ' , x1, 'y1 = ', y1, 'foodx = ', foodx, 'foody = ', foody)
 
         pygame.display.update()
-        clock.tick(snake_speed)
-    FPS = (600)
+        Common.clock.tick(igroc.snake_speed)
     pygame.quit()
     quit()
-
-
 gameLoop()
